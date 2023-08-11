@@ -22,6 +22,7 @@ Prelude: Please make sure you have already downloaded node on your system and th
 git clone [github https url]
 ```
 
+
 2. Install packages
 
 First run `npm install yarn -g` to install yarn globally (if you haven't already).
@@ -31,7 +32,6 @@ Then run:
 ```
 yarn install
 ```
-
 After installation, you should now see a `node_modules` folder.
 
 3. Set up your `.env` file

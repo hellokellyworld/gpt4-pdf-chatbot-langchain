@@ -41,12 +41,37 @@ export default async function handler(
     //create chain
     const chain = makeChain(vectorStore);
     //Ask a question using chat history
+
+    console.log('question asked before sanitization:', question);
+    console.log('question asked after sanitization:', sanitizedQuestion);
+
+    const additionalPrompt =
+      'Once find out the data, have them in JSON format.' +
+      'Desired format: Response:<your response> Data:<JSON data you summarized>';
+
     const response = await chain.call({
-      question: sanitizedQuestion,
+      question: sanitizedQuestion + additionalPrompt,
       chat_history: history || [],
     });
 
-    console.log('response', response);
+    console.log('response received ', response);
+    console.log('text part of response  received:', response.text);
+
+    //now try to do pasing into json format
+
+    let response_position = response.text.indexOf('Response:');
+    let data_position = response.text.indexOf('Data:');
+    const newResponse = response.text.substring(
+      response_position + 10,
+      data_position != -1 ? data_position : response.text.length - 1,
+    );
+
+    // save chat data into database
+    const chatDataForm = JSON.parse(response.text.substring(data_position + 6));
+
+    console.log('chatDataForm, data in JSON format', chatDataForm);
+
+    //next  I may want to return chatDataForm instead of the full response
     res.status(200).json(response);
   } catch (error: any) {
     console.log('error', error);

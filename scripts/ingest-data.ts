@@ -2,20 +2,18 @@ import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { pinecone } from '@/utils/pinecone-client';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 
-/* Name of directory to retrieve your files from 
-   Make sure to add your PDF files inside the 'docs' folder
-*/
+/* Name of directory to retrieve your files from */
 const filePath = 'docs';
 
 export const run = async () => {
   try {
     /*load raw docs from the all files in the directory */
     const directoryLoader = new DirectoryLoader(filePath, {
-      '.pdf': (path) => new PDFLoader(path),
+      '.pdf': (path) => new CustomPDFLoader(path),
     });
 
     // const loader = new PDFLoader(filePath);
@@ -27,14 +25,19 @@ export const run = async () => {
       chunkOverlap: 200,
     });
 
-    const docs = await textSplitter.splitDocuments(rawDocs);
-    console.log('split docs', docs);
+    console.log('rawDocs before splitting', rawDocs);
 
+    const docs = await textSplitter.splitDocuments(rawDocs);
+
+    console.log('new docs after splitting:', docs);
+
+    // console.log('split docs', docs, typeof docs);
+    // console.log('split docs first', [docs[0]]);
     console.log('creating vector store...');
     /*create and store the embeddings in the vectorStore*/
     const embeddings = new OpenAIEmbeddings();
     const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
-
+    console.log('before call to pineconestore');
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex: index,
