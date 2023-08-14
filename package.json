@@ -17,7 +17,9 @@
     "test-outputparser-with-chain": "tsx -r dotenv/config scripts/test-outputparser-with-chain.ts",
     "test-outputparser-with-conversation-retrieval-chain": "tsx -r dotenv/config scripts/test-outputparser-with-conversation-retrieval-chain.ts",
     "test-outputparser-with-chain-oldexample": "tsx -r dotenv/config scripts/test-outputparser-with-chain-oldexample.ts",
-    "test-opp-crqa-chain": "tsx -r dotenv/config scripts/test-outputparser-with-conversational-retrieval-opp-chain.ts"
+    "test-opp-crqa-chain": "tsx -r dotenv/config scripts/test-outputparser-with-conversational-retrieval-opp-chain.ts",
+    "test-field-matching-propmpt": "tsx -r dotenv/config scripts/test-field-matching-propmpt.ts"
+  
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
