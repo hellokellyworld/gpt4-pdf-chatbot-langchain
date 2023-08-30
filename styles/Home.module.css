@@ -23,12 +23,13 @@
   resize: none;
   font-size: 1.1rem;
   padding: 1rem 2rem 1rem 2rem;
-  width: 75vw;
+  width: 90%;
   border-radius: 0.5rem;
   border: 1px solid #d9d9e3;
   background: #ffffff;
   color: #000;
   outline: none;
+  left: 1rem;
 }
 
 .textarea:disabled {
@@ -48,12 +49,14 @@
 .generatebutton {
   position: absolute;
   top: 0.87rem;
-  right: 1rem;
+  right: 3rem;
   color: rgb(165, 162, 162);
   background: none;
   padding: 0.3rem;
   border: none;
   display: flex;
+  width: 10%;
+  height: 2vh;
 }
 
 .loadingwheel {
@@ -98,6 +101,7 @@
   background: #ffffff;
   padding: 1.5rem;
   color: #000;
+  border-bottom: 1px solid #d9d9e3;
 }
 
 .usermessagewaiting {
@@ -189,14 +193,11 @@
 }
 
 .cloud {
-  width: 75vw;
+  width: 100%;
   height: 65vh;
   background: #ffffff;
   border-radius: 0.5rem;
   border: 1px solid #d9d9e3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .pointsnormal {
@@ -259,4 +260,25 @@
     width: 100%;
     text-align: center;
   }
+}
+
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.leftDiv {
+  width: 50%;
+}
+
+.rightDiv {
+  flex-grow: 1;
+}
+
+.extractAllDiv {
+  display: flex;
+  justify-content: center;
+}
+.extractAllButton {
+  border: 1px solid;
 }

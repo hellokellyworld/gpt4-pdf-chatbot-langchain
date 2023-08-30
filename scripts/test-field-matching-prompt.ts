@@ -60,50 +60,6 @@ export const run = async () => {
     \n   
     \nAnswer:`;
 
-    // const SCHEMA_MATCHING_PROMPT = `You are a helpful AI assisnant that can match JSON data schema fields with a question. Here is a json schema, please let me know which field in the following schema matches the best with the questions asked.
-
-    // \n\n JSON Schema\n:
-
-    // ```json\n{\"type\":\"object\",
-    //           \"properties\":{\"commodity_name\":{\"type\":\"string\",\"description\":\"name of commodity\"},
-    //                                               \"shipment_carrier\":{\"type\":\"string\",\"description\":\"name of shipment carrier\"},
-    //                                               \"shipment_vessel\":{\"type\":\"string\",\"description\":\"name of shipment vessel\"},
-    //                                               \"shipment_voyage\":{\"type\":\"string\",\"description\":\"name of shipment voyage\"},
-    //                                               \"cargo_value\":{\"type\":\"number\",\"description\":\"total value in USD\"},
-    //                                               \"cargo_quantity\":{\"type\":\"number\",\"description\":\"total quantity\"},
-    //                                               \"cargo_weight\":{\"type\":\"number\",\"description\":\"total weight in MT\"},
-    //                                               \"cargo_number_of_containers\":{\"type\":\"number\",\"description\":\"number of containers\"},
-    //                                               \"beneficiary\":{\"type\":\"string\",\"description\":\"seller name\"},
-    //                                               \"seller_name\":{\"type\":\"string\",\"description\":\"seller name\"},
-    //                                               \"consignee_name\":{\"type\":\"string\",\"description\":\"buyer name or consignee name\"},
-    //                                               \"port_of_discharge\":{\"type\":\"string\",\"description\":\"port of discharge\"},
-    //                                               \"port_of_loading\":{\"type\":\"string\",\"description\":\"port of loading\"},
-    //                                               \"invoice_number\":{\"type\":\"string\",\"description\":\"invoice number\"},
-    //                                               \"ETD\":{\"type\":\"string\",\"description\":\"ETD of the shipment\"},
-    //                                               \"ETA\":{\"type\":\"string\",\"description\":\"ETA of the shipment\"}
-    //                          },
-    //           }\n
-    // ```
-    // \n\n
-
-    // \n\n\nPlease provide the accurate and exact field name as answer. Also use the format instructions provided here for the answer.
-    // \n\n Format Instructions: \nYou must format your output as a JSON value that adheres to a given \"JSON Schema\" instance.\n\n\"JSON Schema\" is a declarative language that allows you to annotate and validate JSON documents.\n\nFor example, the example \"JSON Schema\" instance {{\"properties\": {{\"foo\": {{\"description\": \"a list of test words\", \"type\": \"array\", \"items\": {{\"type\": \"string\"}}}}}}, \"required\": [\"foo\"]}}}}\nwould match an object with one required property, \"foo\". The \"type\" property specifies \"foo\" must be an \"array\", and the \"description\" property semantically describes it as \"a list of test words\". The items within \"foo\" must be strings.\nThus, the object {{\"foo\": [\"bar\", \"baz\"]}} is a well-formatted instance of this example \"JSON Schema\".
-    // The object {{\"properties\": {{\"foo\": [\"bar\", \"baz\"]}}}} is not well-formatted.\n\nYour output will be parsed and type-checked according to the provided schema instance, so make sure all fields in your output match the schema exactly and there are no trailing commas!
-
-    // n\nHere is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:\n
-    // ```json\n{\"type\":\"object\",
-    //     \"properties\":{ \"field_name\":{\"type\":\"string\",\"description\":\"name of field that matches the question\"},
-    //           \"required\":[\"field_name\"],
-    //       \"additionalProperties\":false,
-    //       \"$schema\":\"http://json-schema.org/draft-07/schema#\",
-    // }\n```
-
-    // in the following JSON format, and fill in the string value for the name of the field \n\n
-
-    // Question: extract invoice \n
-
-    // Answer:`
-
     console.log('Tom Long: before getting prompt');
     const prompt = new PromptTemplate({
       template: SCHEMA_MATCHING_PROMPT,
@@ -145,7 +101,7 @@ export const run = async () => {
       // '{"field_name":"name of field that matches the question"}';
       `json\n{\"field_name\":"name of the field"}\n`;
 
-    const question = 'extract seller name';
+    const question = 'extract invoice number';
 
     const finalPrompt = await prompt.format({
       question: question,

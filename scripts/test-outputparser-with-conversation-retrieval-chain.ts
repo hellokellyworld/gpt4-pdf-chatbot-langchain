@@ -109,7 +109,7 @@ If the question is not related to the context, politely respond that you are tun
 Also use the format instructions provided here.
 \n{context}
 \nQuestion: \n{question}
-\nFormat Instructions: \n{format_instructions}}      
+\nFormat Instructions: \n{format_instructions}      
 `,
       inputVariables: ['question', 'context'],
       partialVariables: {
@@ -129,6 +129,7 @@ Also use the format instructions provided here.
         },
         // questionGeneratorChainOptions: { llm: chatModel, template: newPrompt },
         returnSourceDocuments: true, //The number of source documents returned is 4 by default
+        verbose: true,
       },
     );
     const result = await answerFormattingChain.call(

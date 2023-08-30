@@ -24,13 +24,10 @@ import {
 
 export class NoOpOutputParser extends BaseOutputParser<string> {
   lc_namespace = ['langchain', 'output_parsers', 'default'];
-
   lc_serializable = true;
-
   parse(text: string): Promise<string> {
     return Promise.resolve(text);
   }
-
   getFormatInstructions(): string {
     return '';
   }
@@ -71,6 +68,7 @@ export class ConversationalRetrievalQAWithOutputParserChain<
 
   chatHistoryKey = 'chat_history';
 
+  formatInstructionsKey = 'format_instructions';
   get inputKeys() {
     return [this.inputKey, this.chatHistoryKey];
   }
@@ -161,6 +159,13 @@ export class ConversationalRetrievalQAWithOutputParserChain<
     if (!(this.chatHistoryKey in values)) {
       throw new Error(`Chat history key ${this.chatHistoryKey} not found.`);
     }
+
+    if (!(this.formatInstructionsKey in values)) {
+      // throw new Error(
+      //   `format instructions key ${this.formatInstructionsKey} not found.`,
+      // );
+    }
+
     const question: string = values[this.inputKey];
     const chatHistory: string =
       ConversationalRetrievalQAWithOutputParserChain.getChatHistoryString(
@@ -201,24 +206,29 @@ export class ConversationalRetrievalQAWithOutputParserChain<
       newQuestion,
     );
     console.log('Here are the docs retrieved from Pinecone:', docs);
+    let format_instructions;
+    let inputs;
+    if (!(this.formatInstructionsKey in values)) {
+      format_instructions = '';
+      inputs = {
+        question: newQuestion,
+        input_documents: docs,
+        chat_history: chatHistory,
+      };
+    } else {
+      format_instructions = values[this.formatInstructionsKey];
+      inputs = {
+        question: newQuestion,
+        format_instructions: format_instructions,
+        input_documents: docs,
+        chat_history: chatHistory,
+      };
+    }
 
-    const inputs = {
-      question: newQuestion,
-      input_documents: docs,
-      chat_history: chatHistory,
-    };
     const result = await this.combineDocumentsChain.call(
       inputs,
       runManager?.getChild('combine_documents'),
     );
-
-    // let result2;
-    // // //use the outputParser if provided
-    // if (this.outputParser) {
-    //   console.log('Here is result:', result);
-    //   result2 = this.myParser(JSON.stringify(result.text));
-    //   //await this.outputParser.parseResult([result] as Generation[]);
-    // }
 
     if (this.returnSourceDocuments) {
       return {
@@ -232,24 +242,6 @@ export class ConversationalRetrievalQAWithOutputParserChain<
       // text: result2
     };
   }
-
-  // async _getFinalOutput(
-  //   generations: Generation[],
-  //   promptValue: BasePromptValue,
-  //   runManager?: CallbackManagerForChainRun,
-  // ): Promise<unknown> {
-  //   let finalCompletion: unknown;
-  //   if (this.outputParser) {
-  //     finalCompletion = await this.outputParser.parseResultWithPrompt(
-  //       generations,
-  //       promptValue,
-  //       runManager?.getChild(),
-  //     );
-  //   } else {
-  //     finalCompletion = generations[0].text;
-  //   }
-  //   return finalCompletion;
-  // }
 
   //myParser is Tom trying to parse out the JSON object based on the format/schema
   //defined in the oututParser from the text that is retruned from the combineDocumentsChain call

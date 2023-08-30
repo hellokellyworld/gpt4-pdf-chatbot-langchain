@@ -23,12 +23,18 @@ export const run = async () => {
       //we will have a JSON object for answer being a string type
       //and sources being a string array type
       z.object({
-        carrier: z.string().describe('name of shipment carrier'),
-        invoicenumber: z.string().describe('invoice number of the document'),
-        TQ: z.string().describe('total M/T'),
-        ETD: z.string().describe('ETD of the shipment'),
-        ETA: z.string().describe('ETA of the shipment'),
-        POL: z.string().describe('port of loading or POL of the shipment'),
+        carrier: z.string().describe('name of shipment carrier').optional(),
+        invoicenumber: z
+          .string()
+          .describe('invoice number of the document')
+          .optional(),
+        TQ: z.string().describe('total M/T').optional(),
+        ETD: z.string().describe('ETD of the shipment').optional(),
+        ETA: z.string().describe('ETA of the shipment').optional(),
+        POL: z
+          .string()
+          .describe('port of loading or POL of the shipment')
+          .optional(),
       }),
     );
 
@@ -131,14 +137,13 @@ If the question is not related to the context, politely respond that you are tun
         },
       );
 
-    const question =
-      `What is the invoice number,\n` +
-      `What is the carrier,\n  ` +
-      `and what is the invoice number,\n ` +
-      'what is total M/T.\n' +
-      'what is ETD,\n' +
-      'what is ETA,\n' +
-      'what is POL or port of loading,\n';
+    const question = `What is the invoice number,\n`;
+    // `What is the carrier,\n  ` +
+    // `and what is the invoice number,\n ` +
+    // 'what is total M/T.\n' +
+    // 'what is ETD,\n' +
+    // 'what is ETA,\n' +
+    // 'what is POL or port of loading,\n';
 
     const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
